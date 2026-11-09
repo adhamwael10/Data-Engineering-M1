@@ -48,6 +48,20 @@ Additional category-level datasets:
 - Housing category dataset: 9,669 rows
 - Transportation category dataset: 8,766 rows
 
+## Team Contributions
+
+The project was completed collaboratively, with each team member responsible for specific aspects of the data engineering workflow and dashboard development.
+
+| Team Member | Student ID | Contributions |
+|---|---:|---|
+| **Adham Wael** | 16005914 | Website and dashboard development, frontend design, interactive filters, dashboard callbacks, visual integration, map implementation, and website testing. |
+| **Habiba Ahmed** | 16010159 | Housing dataset research, data collection, exploratory data analysis (EDA), and housing data cleaning. |
+| **Youssef Khaled** | 16007290 | Transportation dataset research, data collection, exploratory data analysis (EDA), and transportation data cleaning. |
+| **Eyad Elmoataz** | 16007389 | Data integration using ZIP codes and years, post-integration cleaning, and data validation. |
+| **Hamza Feras** | 16002652 | Research question development, analytical visualizations, interpretation of findings, and project documentation. |
+
+All team members contributed to reviewing the project results and ensuring that the final deliverables met the milestone requirements.
+
 ## Project Structure
 
 ```text
