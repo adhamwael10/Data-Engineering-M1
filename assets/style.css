@@ -1,0 +1,909 @@
+
+/* =====================================================
+   1. GLOBAL DESIGN SYSTEM
+===================================================== */
+
+:root {
+    --bg-main: #0B1220;
+    --bg-card: #151F32;
+    --bg-card-hover: #1C2940;
+    --bg-input: #0F192B;
+
+    --primary: #3B82F6;
+    --cyan: #22D3EE;
+    --purple: #A78BFA;
+    --orange: #F59E0B;
+
+    --text-main: #F8FAFC;
+    --text-muted: #94A3B8;
+
+    --border: #273449;
+
+    --radius: 12px;
+    --transition: all 0.25s ease;
+}
+
+/* =====================================================
+   2. GLOBAL STYLING
+===================================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    font-family: Arial, sans-serif;
+}
+
+.dashboard-container {
+    background-color: var(--bg-main);
+    min-height: 100vh;
+    padding: 35px;
+}
+
+/* =====================================================
+   3. HEADER
+===================================================== */
+
+.dashboard-header {
+    margin-bottom: 30px;
+}
+
+.header-label {
+    color: var(--cyan);
+    font-size: 11px;
+    letter-spacing: 3px;
+    font-weight: bold;
+}
+
+.header-title {
+    color: var(--text-main);
+    font-size: 30px;
+    margin: 5px 0;
+}
+
+.header-description {
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* =====================================================
+   4. KPI CARDS
+===================================================== */
+
+.kpi-container {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+
+.kpi-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--primary);
+    border-radius: var(--radius);
+    padding: 22px;
+    flex: 1;
+    min-width: 180px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    transition: var(--transition);
+}
+
+.kpi-card:hover {
+    transform: translateY(-4px);
+    background-color: var(--bg-card-hover);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.25);
+}
+
+.kpi-card-primary {
+    border-left-color: var(--primary);
+}
+
+.kpi-card-cyan {
+    border-left-color: var(--cyan);
+}
+
+.kpi-card-purple {
+    border-left-color: var(--purple);
+}
+
+.kpi-card-orange {
+    border-left-color: var(--orange);
+}
+
+.kpi-title {
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+}
+
+.kpi-value {
+    color: var(--text-main);
+    font-size: 30px;
+    margin: 0;
+    font-weight: 700;
+}
+
+.kpi-subtitle {
+    color: var(--text-muted);
+    font-size: 11px;
+    margin-top: 8px;
+}
+
+/* =====================================================
+   5. FILTER PANEL
+===================================================== */
+
+.filter-panel {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 25px;
+    border-radius: var(--radius);
+    margin-bottom: 25px;
+}
+
+.section-title {
+    color: var(--text-main);
+    margin-top: 0;
+    margin-bottom: 22px;
+}
+
+.filter-grid {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.filter-group {
+    flex: 1;
+    min-width: 180px;
+}
+
+.filter-label {
+    display: block;
+    color: var(--text-muted);
+    margin-bottom: 7px;
+    font-size: 14px;
+}
+
+/* =====================================================
+   6. DROPDOWNS
+===================================================== */
+
+.Select-control {
+    background-color: var(--bg-input) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 6px !important;
+    color: var(--text-main) !important;
+}
+
+.Select-value-label,
+.Select-placeholder,
+.Select-input > input {
+    color: var(--text-main) !important;
+}
+
+.Select-menu-outer {
+    background-color: var(--bg-card) !important;
+    border: 1px solid var(--border) !important;
+    z-index: 1000;
+}
+
+.VirtualizedSelectOption {
+    background-color: var(--bg-card);
+    color: var(--text-main);
+}
+
+.VirtualizedSelectFocusedOption {
+    background-color: var(--bg-card-hover) !important;
+    color: var(--cyan) !important;
+}
+
+/* =====================================================
+   7. SEARCH INPUT
+===================================================== */
+
+.search-input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background-color: var(--bg-input);
+    color: var(--text-main);
+    font-size: 14px;
+    outline: none;
+    transition: var(--transition);
+}
+
+.search-input::placeholder {
+    color: var(--text-muted);
+}
+
+.search-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+/* =====================================================
+   8. BUTTONS
+===================================================== */
+
+.generate-button {
+    background-color: var(--primary);
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 7px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: var(--transition);
+}
+
+.generate-button:hover {
+    background-color: #2563EB;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(59, 130, 246, 0.25);
+}
+
+.generate-button:active {
+    transform: translateY(0);
+}
+
+/* =====================================================
+   9. REPORT STATUS
+===================================================== */
+
+.report-status {
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    font-size: 13px;
+}
+
+/* =====================================================
+   10. CHARTS
+===================================================== */
+
+.charts-container {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+    align-items: stretch;
+}
+
+.chart-card {
+    min-width: 0;
+    width: 100%;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 10px;
+    overflow: hidden;
+}
+
+/* =====================================================
+   11. DATA STORY
+===================================================== */
+
+.story-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 25px;
+    border-radius: var(--radius);
+    margin-top: 25px;
+}
+
+.story-label {
+    color: var(--cyan);
+    font-size: 11px;
+    letter-spacing: 2px;
+    font-weight: bold;
+}
+
+.story-title,
+.story-heading {
+    color: var(--text-main);
+}
+
+.story-description {
+    color: var(--text-muted);
+    line-height: 1.8;
+}
+
+/* =====================================================
+   12. RESPONSIVE DESIGN
+===================================================== */
+
+@media (max-width: 900px) {
+    .charts-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-container {
+        padding: 18px;
+    }
+
+    .header-title {
+        font-size: 24px;
+    }
+
+    .kpi-container {
+        gap: 12px;
+    }
+
+    .kpi-card {
+        min-width: 145px;
+    }
+
+    .filter-grid {
+        flex-direction: column;
+    }
+
+    .filter-group {
+        width: 100%;
+    }
+}
+
+/* =====================================================
+   13. INTEGRATED DATA TABLE
+===================================================== */
+
+.data-table-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 25px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    overflow: hidden;
+}
+
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.table-header .section-title {
+    margin-bottom: 8px;
+}
+
+.table-description {
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.table-record-count {
+    color: var(--cyan);
+    font-size: 13px;
+    font-weight: 600;
+    padding-top: 5px;
+}
+
+.data-table-card .dash-spreadsheet-container {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.data-table-card .dash-header {
+    font-weight: 600;
+}
+
+.data-table-card input {
+    color: var(--text-main) !important;
+}
+
+.data-table-card .previous-next-container button {
+    color: var(--text-main);
+    background-color: var(--bg-card-hover);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 7px 12px;
+    margin: 5px;
+}
+
+.data-table-card .previous-next-container button:hover {
+    background-color: var(--primary);
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .data-table-card {
+        padding: 15px;
+    }
+
+    .table-header {
+        flex-direction: column;
+    }
+}
+
+/* =====================================================
+   14. AUTOMATED ANALYTICAL INSIGHTS
+===================================================== */
+
+.insights-section {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 25px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+.insights-header {
+    margin-bottom: 22px;
+}
+
+.insights-label {
+    color: var(--cyan);
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+}
+
+.insights-title {
+    color: var(--text-main);
+    font-size: 23px;
+    margin: 0 0 8px 0;
+}
+
+.insights-description {
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.insights-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.insight-card {
+    background-color: var(--bg-input);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--primary);
+    border-radius: 9px;
+    padding: 20px;
+    min-width: 0;
+    transition: var(--transition);
+}
+
+.insight-card:hover {
+    background-color: var(--bg-card-hover);
+    transform: translateY(-3px);
+}
+
+.insight-label {
+    color: var(--text-muted);
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+}
+
+.insight-value {
+    color: var(--text-main);
+    font-size: 25px;
+    font-weight: 700;
+    margin: 0 0 10px 0;
+    overflow-wrap: anywhere;
+}
+
+.insight-description {
+    color: var(--text-muted);
+    font-size: 12px;
+    line-height: 1.7;
+    margin: 0;
+}
+
+.insight-blue {
+    border-left-color: var(--primary);
+}
+
+.insight-purple {
+    border-left-color: var(--purple);
+}
+
+.insight-green {
+    border-left-color: #22C55E;
+}
+
+.insight-orange {
+    border-left-color: var(--orange);
+}
+
+.insight-cyan {
+    border-left-color: var(--cyan);
+}
+
+.insight-empty {
+    color: var(--text-muted);
+    padding: 20px;
+    background-color: var(--bg-input);
+    border-radius: 8px;
+    font-size: 13px;
+}
+
+/* =====================================================
+   15. INSIGHTS RESPONSIVE DESIGN
+===================================================== */
+
+@media (max-width: 1100px) {
+    .insights-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    .insights-section {
+        padding: 18px;
+    }
+
+    .insights-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .insight-value {
+        font-size: 23px;
+    }
+}
+
+/* =====================================================
+   16. NYC GEOGRAPHIC MAP
+===================================================== */
+
+.map-section {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 25px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+.map-header {
+    margin-bottom: 22px;
+}
+
+.map-controls {
+    width: 320px;
+    max-width: 100%;
+    margin-bottom: 18px;
+}
+
+.map-control-label {
+    display: block;
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 9px;
+}
+
+.map-metric-dropdown {
+    width: 100%;
+}
+
+.map-metric-dropdown .Select-control {
+    background-color: #0F192B !important;
+    border: 1px solid #273449 !important;
+    border-radius: 7px !important;
+    color: #F8FAFC !important;
+    min-height: 42px;
+}
+
+.map-metric-dropdown .Select-value-label {
+    color: #F8FAFC !important;
+}
+
+.map-metric-dropdown .Select-placeholder {
+    color: #CBD5E1 !important;
+}
+
+.map-metric-dropdown .Select-menu-outer {
+    background-color: #151F32 !important;
+    border: 1px solid #273449 !important;
+    color: #F8FAFC !important;
+    z-index: 1000;
+}
+
+.map-metric-dropdown .VirtualizedSelectOption {
+    background-color: #151F32 !important;
+    color: #F8FAFC !important;
+}
+
+.map-metric-dropdown .VirtualizedSelectFocusedOption {
+    background-color: #263B59 !important;
+    color: #22D3EE !important;
+}
+
+.map-metric-dropdown .Select-arrow {
+    border-top-color: #CBD5E1 !important;
+}
+
+.map-card {
+    background-color: #151F32;
+    border: 1px solid #273449;
+    border-radius: 10px;
+    padding: 12px;
+    overflow: hidden;
+}
+
+.map-card .dash-graph {
+    width: 100%;
+}
+
+.map-section .insights-title {
+    margin-bottom: 9px;
+}
+
+.map-section .insights-description {
+    max-width: 850px;
+    line-height: 1.7;
+}
+
+/* =====================================================
+   17. GEOGRAPHIC STATISTICS CARDS
+===================================================== */
+
+.geo-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+    margin-top: 22px;
+}
+
+.geo-stat-card {
+    background-color: var(--bg-input);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--primary);
+    border-radius: 10px;
+    padding: 22px;
+    min-width: 0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+    transition: var(--transition);
+}
+
+.geo-stat-card:hover {
+    transform: translateY(-4px);
+    background-color: var(--bg-card-hover);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.2);
+}
+
+.geo-stat-blue {
+    border-left-color: var(--primary);
+}
+
+.geo-stat-cyan {
+    border-left-color: var(--cyan);
+}
+
+.geo-stat-purple {
+    border-left-color: var(--purple);
+}
+
+.geo-stat-orange {
+    border-left-color: var(--orange);
+}
+
+.geo-stat-label {
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    line-height: 1.5;
+    margin: 0 0 13px 0;
+}
+
+.geo-stat-value {
+    color: var(--text-main);
+    font-size: 29px;
+    font-weight: 700;
+    margin: 0;
+    overflow-wrap: anywhere;
+}
+
+.geo-stat-description {
+    color: var(--text-muted);
+    font-size: 11px;
+    line-height: 1.6;
+    margin: 9px 0 0 0;
+}
+
+/* =====================================================
+   18. MAP RESPONSIVE DESIGN
+===================================================== */
+
+@media (max-width: 1100px) {
+    .geo-stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .map-section {
+        padding: 16px;
+    }
+
+    .map-controls {
+        width: 100%;
+    }
+
+    .map-card {
+        padding: 5px;
+    }
+
+    .map-card .dash-graph {
+        min-height: 450px;
+    }
+
+    .geo-stats-grid {
+        gap: 12px;
+    }
+
+    .geo-stat-card {
+        padding: 17px;
+    }
+
+    .geo-stat-value {
+        font-size: 25px;
+    }
+}
+
+@media (max-width: 600px) {
+    .geo-stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .geo-stat-card {
+        padding: 20px;
+    }
+}
+
+/* =====================================================
+   15. NYC GEOGRAPHIC INTELLIGENCE
+===================================================== */
+
+.map-section {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 27px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+.map-header {
+    margin-bottom: 22px;
+}
+
+.map-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    overflow: hidden;
+}
+
+.map-controls {
+    max-width: 350px;
+    margin-bottom: 15px;
+}
+
+.map-control-label {
+    display: block;
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 9px;
+}
+
+#nyc-zip-map {
+    width: 100%;
+}
+
+.geo-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+    margin-top: 22px;
+}
+
+.geo-stat-card {
+    background-color: var(--bg-input);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--primary);
+    border-radius: 11px;
+    padding: 22px;
+    min-width: 0;
+    transition: var(--transition);
+}
+
+.geo-stat-card:hover {
+    transform: translateY(-4px);
+    background-color: var(--bg-card-hover);
+    box-shadow: 0 7px 20px rgba(0, 0, 0, 0.2);
+}
+
+.geo-stat-blue {
+    border-left-color: var(--primary);
+}
+
+.geo-stat-cyan {
+    border-left-color: var(--cyan);
+}
+
+.geo-stat-purple {
+    border-left-color: var(--purple);
+}
+
+.geo-stat-orange {
+    border-left-color: var(--orange);
+}
+
+.geo-stat-label {
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 14px;
+}
+
+.geo-stat-value {
+    color: var(--text-main);
+    font-size: 30px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.geo-stat-description {
+    color: var(--text-muted);
+    font-size: 11px;
+    line-height: 1.5;
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+
+/* Responsive geographic statistics */
+
+@media (max-width: 1000px) {
+    .geo-stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    .map-section {
+        padding: 16px;
+    }
+
+    .geo-stats-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .geo-stat-card {
+        padding: 18px;
+    }
+
+    .geo-stat-value {
+        font-size: 26px;
+    }
+}
