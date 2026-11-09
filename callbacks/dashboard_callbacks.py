@@ -265,14 +265,18 @@ def register_dashboard_callbacks(
 
         ],
 
-        Input("generate-button", "n_clicks"),
+        # CHANGED: Both controls now trigger the callback
+        [
+            Input("generate-button", "n_clicks"),
+            Input("map-metric-dropdown", "value")
+        ],
 
+        # Other filters remain State
         [
 
             State("borough-dropdown", "value"),
             State("year-dropdown", "value"),
             State("search-input", "value"),
-            State("map-metric-dropdown", "value"),
             State("housing-category-dropdown", "value"),
             State("transport-category-dropdown", "value")
 
@@ -281,10 +285,10 @@ def register_dashboard_callbacks(
 
     def update_dashboard(
         n_clicks,
+        map_metric,
         selected_borough,
         selected_year,
         search_term,
-        map_metric,
         selected_housing_category,
         selected_transport_category
     ):

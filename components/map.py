@@ -2,10 +2,10 @@
 import json
 from functools import lru_cache
 from pathlib import Path
+from copy import deepcopy
 
 import pandas as pd
 import plotly.graph_objects as go
-from copy import deepcopy
 
 
 # =====================================================
@@ -266,13 +266,23 @@ def create_zip_map(
 
     if "year" in df.columns:
 
-        df["_year_label"] = (
-            pd.to_datetime(
-                df["year"],
-                errors="coerce"
-            )
-            .dt.year
+        # Support both integer years (2023)
+        # and date-formatted years (2023-01-01).
+        year_values = pd.to_numeric(
+            df["year"],
+            errors="coerce"
         )
+
+        date_mask = year_values.isna()
+
+        year_values.loc[date_mask] = (
+            pd.to_datetime(
+                df.loc[date_mask, "year"],
+                errors="coerce"
+            ).dt.year
+        )
+
+        df["_year_label"] = year_values
 
         aggregation["years"] = (
             "_year_label",

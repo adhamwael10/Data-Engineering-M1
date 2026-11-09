@@ -442,7 +442,7 @@ def create_layout(boroughs, years):
         ], className="data-table-card"),
 
         # =========================================
-        # DATA STORY
+        # IMPROVED DATA STORY
         # =========================================
 
         html.Div([
@@ -457,14 +457,59 @@ def create_layout(boroughs, years):
                 className="story-title"
             ),
 
+            # Research Objective
+
             html.P(
-                "This project investigates how housing development "
-                "and motor vehicle collisions vary across NYC ZIP codes "
-                "and over time. By integrating building permit data "
-                "with transportation data, we explore potential "
-                "relationships between urban development and traffic safety.",
+                "Understanding the connection between urban "
+                "development and traffic safety is important "
+                "for building more sustainable cities. This "
+                "project integrates NYC building permit records "
+                "with motor vehicle collision data at the ZIP "
+                "code and yearly levels to explore geographic "
+                "and temporal patterns across New York City.",
                 className="story-description"
             ),
+
+            # Analytical Findings
+
+            html.H4(
+                "What the Analysis Reveals",
+                className="story-heading"
+            ),
+
+            html.P(
+                "The dashboard provides dynamically calculated "
+                "insights, including areas with the highest "
+                "permit activity, years with peak construction "
+                "activity, yearly changes in approved permits, "
+                "and statistical associations between permits "
+                "and traffic collisions. Users can explore how "
+                "these patterns vary across boroughs, ZIP codes "
+                "and years using interactive filters and maps.",
+                className="story-description"
+            ),
+
+            # NYC Benefits
+
+            html.H4(
+                "Benefits for New York City",
+                className="story-heading"
+            ),
+
+            html.P(
+                "The integrated analysis can support urban "
+                "planners and transportation authorities by "
+                "highlighting areas that may deserve further "
+                "investigation. It can help inform discussions "
+                "about infrastructure planning, construction "
+                "activity and traffic safety priorities. "
+                "The findings provide descriptive evidence "
+                "to support further investigation, rather "
+                "than direct policy conclusions.",
+                className="story-description"
+            ),
+
+            # Limitations
 
             html.H4(
                 "Limitations",
@@ -472,10 +517,14 @@ def create_layout(boroughs, years):
             ),
 
             html.P(
-                "The analysis identifies associations, not causation. "
-                "Transportation data coverage starts in 2020, while 2026 "
-                "is an incomplete year. Dataset sampling and cleaning "
-                "decisions may also affect representativeness.",
+                "The analysis identifies associations, not "
+                "causation. Transportation data coverage starts "
+                "in 2020, while 2026 is an incomplete year. "
+                "The use of aggregated ZIP code and yearly "
+                "records limits the ability to identify "
+                "street-level or daily patterns. Raw collision "
+                "counts also do not account for traffic "
+                "exposure or population differences.",
                 className="story-description"
             )
 

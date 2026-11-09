@@ -5,7 +5,6 @@ from dash import html
 
 def format_number(value):
     """Format numeric values for dashboard display."""
-
     return f"{value:,.0f}"
 
 
@@ -148,45 +147,55 @@ def create_insights_cards(filtered_df):
             if percentage_change > 0:
 
                 trend_value = f"+{percentage_change:.1f}%"
+
                 trend_description = (
                     f"Permit activity increased from "
                     f"{previous_year} to {latest_year}."
                 )
+
                 trend_class = "insight-green"
 
             elif percentage_change < 0:
 
                 trend_value = f"{percentage_change:.1f}%"
+
                 trend_description = (
                     f"Permit activity decreased from "
                     f"{previous_year} to {latest_year}."
                 )
+
                 trend_class = "insight-orange"
 
             else:
 
                 trend_value = "0.0%"
+
                 trend_description = (
                     f"Permit activity remained unchanged "
                     f"from {previous_year} to {latest_year}."
                 )
+
                 trend_class = "insight-cyan"
 
         else:
 
             trend_value = "N/A"
+
             trend_description = (
                 "Previous-year permit activity was zero."
             )
+
             trend_class = "insight-cyan"
 
     else:
 
         trend_value = "N/A"
+
         trend_description = (
             "At least two complete years are needed "
             "to calculate the yearly change."
         )
+
         trend_class = "insight-cyan"
 
     trend_insight = create_insight_card(
@@ -218,16 +227,24 @@ def create_insights_cards(filtered_df):
 
         if correlation >= 0.7:
             correlation_label = "Strong positive"
+
         elif correlation >= 0.3:
             correlation_label = "Moderate positive"
+
         elif correlation > 0:
             correlation_label = "Weak positive"
+
         elif correlation <= -0.7:
             correlation_label = "Strong negative"
+
         elif correlation <= -0.3:
             correlation_label = "Moderate negative"
-        else:
+
+        elif correlation < 0:
             correlation_label = "Weak negative"
+
+        else:
+            correlation_label = "No linear correlation"
 
         correlation_value = f"{correlation:+.2f}"
 
