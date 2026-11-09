@@ -66,6 +66,44 @@ def create_filter_panel(boroughs, years):
 
             ], className="filter-group"),
 
+            # HOUSING CATEGORY
+            html.Div([
+
+                html.Label(
+                    "Housing Category",
+                    className="filter-label"
+                ),
+
+                dcc.Dropdown(
+                    id="housing-category-dropdown",
+                    options=[],
+                    value=None,
+                    placeholder="All housing categories",
+                    clearable=True,
+                    searchable=True
+                )
+
+            ], className="filter-group"),
+
+            # TRANSPORTATION CATEGORY
+            html.Div([
+
+                html.Label(
+                    "Transportation Category",
+                    className="filter-label"
+                ),
+
+                dcc.Dropdown(
+                    id="transport-category-dropdown",
+                    options=[],
+                    value=None,
+                    placeholder="All transportation categories",
+                    clearable=True,
+                    searchable=True
+                )
+
+            ], className="filter-group"),
+
             # SEARCH
             html.Div([
 

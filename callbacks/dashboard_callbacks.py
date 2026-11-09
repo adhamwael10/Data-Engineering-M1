@@ -26,11 +26,11 @@ from components.map import (
 )
 
 
+# ==========================================
+# GEOGRAPHIC STATISTICS
+# ==========================================
+
 def calculate_geographic_stats(filtered_df):
-    """
-    Calculate geographic statistics using the same ZIP code
-    matching logic as the NYC geographic map.
-    """
 
     if filtered_df.empty:
         return "0", "0", "0", "0.0%"
@@ -43,7 +43,6 @@ def calculate_geographic_stats(filtered_df):
     if df.empty:
         return "0", "0", "0", "0.0%"
 
-    # Load geographic boundaries
     geojson = load_zip_geojson()
 
     geojson_zips = {
@@ -53,19 +52,15 @@ def calculate_geographic_stats(filtered_df):
 
     geojson_zips.discard(None)
 
-    # Find ZIP codes available in the filtered dataset
     csv_zips = set(df["zip_code"].unique())
 
-    # Identify ZIP codes matched with GeoJSON
     matched_zips = csv_zips.intersection(geojson_zips)
 
-    # Calculate geographic match rate
     match_rate = (
-        (len(matched_zips) / len(csv_zips)) * 100
+        len(matched_zips) / len(csv_zips) * 100
         if csv_zips else 0
     )
 
-    # Aggregate data by ZIP code
     df["permit_count"] = pd.to_numeric(
         df["permit_count"],
         errors="coerce"
@@ -76,7 +71,6 @@ def calculate_geographic_stats(filtered_df):
         errors="coerce"
     ).fillna(0)
 
-    # Keep only geographically matched ZIP codes
     matched_df = df[
         df["zip_code"].isin(matched_zips)
     ]
@@ -92,11 +86,104 @@ def calculate_geographic_stats(filtered_df):
     )
 
 
-def register_dashboard_callbacks(app, df, colors):
+# ==========================================
+# CATEGORY MATCHING
+# ==========================================
+
+def get_category_keys(
+    category_df,
+    category_column,
+    selected_category
+):
+
+    if not selected_category:
+        return None
+
+    subset = category_df[
+        category_df[category_column] == selected_category
+    ].copy()
+
+    if subset.empty:
+        return set()
+
+    return set(
+        zip(
+            subset["zip_code"].astype(str).str.zfill(5),
+            subset["year"].astype(int),
+            subset["borough"].astype(str).str.upper()
+        )
+    )
+
+
+def apply_category_filters(
+    filtered_df,
+    housing_category_df,
+    transport_category_df,
+    selected_housing_category,
+    selected_transport_category
+):
+
+    result = filtered_df.copy()
+
+    housing_keys = get_category_keys(
+        housing_category_df,
+        "work_type",
+        selected_housing_category
+    )
+
+    transport_keys = get_category_keys(
+        transport_category_df,
+        "contributing_factor_vehicle_1",
+        selected_transport_category
+    )
+
+    # Housing category filter
+    if housing_keys is not None:
+
+        result = result[
+            [
+                (
+                    str(row.zip_code).zfill(5),
+                    int(row.year),
+                    str(row.borough).upper()
+                ) in housing_keys
+                for row in result.itertuples()
+            ]
+        ]
+
+    # Transportation category filter
+    if transport_keys is not None:
+
+        result = result[
+            [
+                (
+                    str(row.zip_code).zfill(5),
+                    int(row.year),
+                    str(row.borough).upper()
+                ) in transport_keys
+                for row in result.itertuples()
+            ]
+        ]
+
+    return result
+
+
+# ==========================================
+# REGISTER DASHBOARD CALLBACKS
+# ==========================================
+
+def register_dashboard_callbacks(
+    app,
+    df,
+    colors,
+    housing_category_df,
+    transport_category_df
+):
 
     """
     Register callbacks for:
 
+    - Category dropdown options
     - Dashboard charts
     - KPI cards
     - Geographic map
@@ -105,6 +192,49 @@ def register_dashboard_callbacks(app, df, colors):
     - Integrated dataset table
     - Automated analytical insights
     """
+
+    # ======================================
+    # 1. POPULATE CATEGORY DROPDOWNS
+    # ======================================
+
+    @app.callback(
+        Output("housing-category-dropdown", "options"),
+        Output("transport-category-dropdown", "options"),
+        Input("generate-button", "n_clicks")
+    )
+    def populate_category_options(n_clicks):
+
+        housing_categories = sorted(
+            housing_category_df["work_type"]
+            .dropna()
+            .astype(str)
+            .unique()
+        )
+
+        transport_categories = sorted(
+            transport_category_df[
+                "contributing_factor_vehicle_1"
+            ]
+            .dropna()
+            .astype(str)
+            .unique()
+        )
+
+        housing_options = [
+            {"label": category, "value": category}
+            for category in housing_categories
+        ]
+
+        transport_options = [
+            {"label": category, "value": category}
+            for category in transport_categories
+        ]
+
+        return housing_options, transport_options
+
+    # ======================================
+    # 2. MAIN DASHBOARD CALLBACK
+    # ======================================
 
     @app.callback(
         [
@@ -142,7 +272,9 @@ def register_dashboard_callbacks(app, df, colors):
             State("borough-dropdown", "value"),
             State("year-dropdown", "value"),
             State("search-input", "value"),
-            State("map-metric-dropdown", "value")
+            State("map-metric-dropdown", "value"),
+            State("housing-category-dropdown", "value"),
+            State("transport-category-dropdown", "value")
 
         ]
     )
@@ -152,19 +284,20 @@ def register_dashboard_callbacks(app, df, colors):
         selected_borough,
         selected_year,
         search_term,
-        map_metric
+        map_metric,
+        selected_housing_category,
+        selected_transport_category
     ):
 
-        # =====================================
-        # 1. FILTER DATA
-        # =====================================
+        # ==================================
+        # 1. APPLY BASIC FILTERS
+        # ==================================
 
         (
             filtered_df,
             active_borough,
             active_year,
             search_error
-
         ) = filter_dataset(
             df,
             selected_borough,
@@ -172,9 +305,21 @@ def register_dashboard_callbacks(app, df, colors):
             search_term
         )
 
-        # =====================================
-        # 2. HANDLE EMPTY RESULTS
-        # =====================================
+        # ==================================
+        # 2. APPLY CATEGORY FILTERS
+        # ==================================
+
+        filtered_df = apply_category_filters(
+            filtered_df,
+            housing_category_df,
+            transport_category_df,
+            selected_housing_category,
+            selected_transport_category
+        )
+
+        # ==================================
+        # 3. HANDLE EMPTY RESULTS
+        # ==================================
 
         if filtered_df.empty:
 
@@ -190,7 +335,7 @@ def register_dashboard_callbacks(app, df, colors):
 
             status = search_error or (
                 "No records match the selected filters. "
-                "Try another borough, year, or ZIP code."
+                "Try different filter combinations."
             )
 
             return (
@@ -221,41 +366,38 @@ def register_dashboard_callbacks(app, df, colors):
 
             )
 
-        # =====================================
-        # 3. CALCULATE KPIs
-        # =====================================
+        # ==================================
+        # 4. CALCULATE KPIs
+        # ==================================
 
         kpis = calculate_kpis(filtered_df)
 
-        # =====================================
-        # 4. CALCULATE GEOGRAPHIC STATISTICS
-        # =====================================
+        # ==================================
+        # 5. GEOGRAPHIC STATISTICS
+        # ==================================
 
         (
             geo_zips,
             geo_permits,
             geo_collisions,
             geo_match_rate
-
         ) = calculate_geographic_stats(filtered_df)
 
-        # =====================================
-        # 5. AGGREGATE YEARLY DATA
-        # =====================================
+        # ==================================
+        # 6. YEARLY AGGREGATION
+        # ==================================
 
         yearly_data = get_yearly_data(filtered_df)
 
-        # =====================================
-        # 6. CREATE EXISTING CHARTS
-        # =====================================
-
         display_borough = (
-
             active_borough.title()
             if active_borough
             else "All Boroughs"
-
         )
+
+        # ==================================
+        # 7. CREATE CHARTS
+        # ==================================
 
         fig1 = create_permits_chart(
             yearly_data,
@@ -278,26 +420,26 @@ def register_dashboard_callbacks(app, df, colors):
             colors
         )
 
-        # =====================================
-        # 7. CREATE NYC GEOGRAPHIC MAP
-        # =====================================
+        # ==================================
+        # 8. CREATE MAP
+        # ==================================
 
         map_fig = create_zip_map(
             filtered_df,
             map_metric
         )
 
-        # =====================================
-        # 8. GENERATE ANALYTICAL INSIGHTS
-        # =====================================
+        # ==================================
+        # 9. ANALYTICAL INSIGHTS
+        # ==================================
 
         insights = create_insights_cards(
             filtered_df
         )
 
-        # =====================================
-        # 9. PREPARE TABLE DATA
-        # =====================================
+        # ==================================
+        # 10. PREPARE DATA TABLE
+        # ==================================
 
         table_df = filtered_df.copy()
 
@@ -326,29 +468,44 @@ def register_dashboard_callbacks(app, df, colors):
             f"Showing {len(table_records):,} records"
         )
 
-        # =====================================
-        # 10. REPORT STATUS
-        # =====================================
+        # ==================================
+        # 11. REPORT STATUS
+        # ==================================
 
         display_year = (
-
             active_year
             if active_year is not None
             else "All years"
+        )
 
+        selected_filters = []
+
+        if selected_housing_category:
+            selected_filters.append(
+                f"Housing: {selected_housing_category}"
+            )
+
+        if selected_transport_category:
+            selected_filters.append(
+                f"Transportation: {selected_transport_category}"
+            )
+
+        category_status = (
+            " | ".join(selected_filters)
+            if selected_filters
+            else "All categories"
         )
 
         status = (
-
             f"Showing {len(filtered_df):,} records | "
             f"Borough: {display_borough} | "
-            f"Year: {display_year}"
-
+            f"Year: {display_year} | "
+            f"{category_status}"
         )
 
-        # =====================================
-        # 11. RETURN RESULTS
-        # =====================================
+        # ==================================
+        # 12. RETURN DASHBOARD RESULTS
+        # ==================================
 
         return (
 
